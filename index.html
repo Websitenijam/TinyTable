@@ -107,7 +107,7 @@
       background: #1a5276; /* Darker blue */
       display: flex;
       justify-content: center;
-      gap: 30px;
+      gap: 25px;
       padding: 15px 0;
       font-weight: bold;
       font-family: 'Playfair Display', serif;
@@ -116,10 +116,12 @@
       text-transform: uppercase;
       box-shadow: inset 0 -1px 3px rgba(255,255,255,0.2);
       z-index: 10;
+      flex-wrap: wrap;
     }
     nav a {
       color: #f0f3f5;
       transition: color 0.3s ease;
+      padding: 4px 8px;
     }
     nav a:hover {
       color: #ffd369;
@@ -195,7 +197,7 @@
     /* QR Code Section */
     #qr-section {
       text-align: center;
-      margin-top: 60px;
+      margin-top: 40px;
       margin-bottom: 40px;
     }
     #qr-section img {
@@ -212,6 +214,79 @@
       color: #0d3b66;
       letter-spacing: 1.2px;
       font-weight: 600;
+    }
+
+    /* Reservation Section */
+    #reservation {
+      max-width: 720px;
+      margin: 0 auto 30px;
+      padding: 30px 20px 10px;
+      background: #f0f3f5;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(13,59,102,0.15);
+    }
+    #reservation h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: #0d3b66;
+      border-bottom: 3px solid #ffd369;
+      padding-bottom: 10px;
+      margin-bottom: 25px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    #reservation form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    #reservation label {
+      font-weight: 600;
+      color: #1a5276;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1rem;
+    }
+    #reservation input,
+    #reservation select {
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: 1.5px solid #a7b8cc;
+      border-radius: 6px;
+      font-family: 'Roboto', sans-serif;
+      transition: border-color 0.3s ease;
+    }
+    #reservation input:focus,
+    #reservation select:focus {
+      border-color: #ffd369;
+      outline: none;
+    }
+    #reservation button {
+      background-color: #0d3b66;
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      padding: 12px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      letter-spacing: 1.5px;
+      transition: background-color 0.3s ease;
+      text-transform: uppercase;
+    }
+    #reservation button:hover {
+      background-color: #ffd369;
+      color: #0d3b66;
+    }
+    #confirmation-message {
+      margin-top: 20px;
+      font-family: 'Playfair Display', serif;
+      color: #0d3b66;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      display: none;
     }
 
     /* Footer */
@@ -233,7 +308,6 @@
         font-size: 2.5rem;
       }
       nav {
-        flex-wrap: wrap;
         gap: 15px;
       }
       section h2 {
@@ -242,6 +316,9 @@
       #qr-section img {
         width: 120px;
         height: 120px;
+      }
+      #reservation {
+        padding: 20px 15px 10px;
       }
     }
   </style>
@@ -257,6 +334,7 @@
     <a href="#main-course">Main Course</a>
     <a href="#desserts">Desserts</a>
     <a href="#beverages">Beverages</a>
+    <a href="#reservation">Reservation</a>
   </nav>
   <div class="container">
     <section id="about-us">
@@ -338,15 +416,87 @@
       </article>
     </section>
 
+    <section id="reservation">
+      <h2>Reservation</h2>
+      <form id="reservation-form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required placeholder="Your full name" />
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="you@example.com" />
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 890" />
+
+        <label for="date">Reservation Date</label>
+        <input type="date" id="date" name="date" required min="" />
+
+        <label for="time">Time</label>
+        <input type="time" id="time" name="time" required />
+
+        <label for="guests">Number of Guests</label>
+        <select id="guests" name="guests" required>
+          <option value="" disabled selected>Select number of guests</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6+</option>
+        </select>
+
+        <button type="submit">Reserve Now</button>
+      </form>
+      <div id="confirmation-message"></div>
+    </section>
+
     <section id="qr-section">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tiny-tables.example" alt="TinyTables QR Code" />
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://websitenijam.github.io/TinyTables/" alt="TinyTables QR Code" />
       <p>Scan here to visit TinyTables online</p>
     </section>
   </div>
   <footer>
     &copy; 2024 TinyTables — Inspired by the timeless elegance of Greek cuisine and culture.
   </footer>
+  <script>
+    // Set minimum date for reservation date input as today
+    const dateInput = document.getElementById('date');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+
+    // Handle form submission
+    const form = document.getElementById('reservation-form');
+    const confirmationMessage = document.getElementById('confirmation-message');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Get form values
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+      const date = form.date.value;
+      const time = form.time.value;
+      const guests = form.guests.value;
+
+      // Basic validation (fields are required, so mostly covered)
+      if (!name || !email || !phone || !date || !time || !guests) {
+        confirmationMessage.style.color = 'red';
+        confirmationMessage.textContent = 'Please fill out all fields.';
+        confirmationMessage.style.display = 'block';
+        return;
+      }
+
+      // Show success message
+      confirmationMessage.style.color = '#0d3b66';
+      confirmationMessage.textContent = 
+        `Thank you, ${name}! Your reservation for ${guests} guest(s) on ${date} at ${time} has been received. We will contact you shortly at ${email} or ${phone}.`;
+      confirmationMessage.style.display = 'block';
+
+      // Optionally, clear the form
+      form.reset();
+    });
+  </script>
 </body>
 </html>
-
 
